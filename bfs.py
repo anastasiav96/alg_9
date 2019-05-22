@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+
 from graph import MyGraph
 from collections import deque
 
@@ -17,30 +18,22 @@ def BFS(graph, s):
     graph.attributes[s]['pi'] = None
     graph.attributes[s]['color'] = 'gray'
     q.append(s)
-
+    print(graph.adj)
     step = 0
     while len(q) > 0:
         step += 1
         print(step, [graph.attributes[v]['name'] for v in q])
         print(step, [graph.attributes[v]['d'] for v in q])
         graph.draw('{}'.format(step))
-
-        #raise NotImplementedError('Реализуйте алгоритм здесь')
-        
-        q = deque([s])
-        level = {s: 0}
-        parent = {s: None}
-        i = 1
-        while q:
-            v = q.popleft()
-            for n in graph.neighbors(v):
-                if n not in level:            
-                    q.append(n)
-                    level[n] = i
-                    parent[n] = v
-            i += 1
-        return level, parent
-
+        v = q.popleft()
+        for j in graph.adj[v]:
+            if graph.attributes[j]['color'] == 'white':
+                q.append(j)
+                graph.attributes[j]['d'] = int(graph.attributes[v]['d'])+1
+                graph.attributes[j]['pi']=v
+                graph.attributes[j]['color'] = 'gray'
+        graph.attributes[v]['color'] = 'black'
+    graph.draw('{}'.format(step))
 def main():
     g = MyGraph()
     g.add_vertices(8)
