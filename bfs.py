@@ -25,8 +25,21 @@ def BFS(graph, s):
         print(step, [graph.attributes[v]['d'] for v in q])
         graph.draw('{}'.format(step))
 
-        raise NotImplementedError('Реализуйте алгоритм здесь')
-
+        #raise NotImplementedError('Реализуйте алгоритм здесь')
+        
+        q = deque([s])
+        level = {s: 0}
+        parent = {s: None}
+        i = 1
+        while q:
+            v = q.popleft()
+            for n in graph.neighbors(v):
+                if n not in level:            
+                    q.append(n)
+                    level[n] = i
+                    parent[n] = v
+            i += 1
+        return level, parent
 
 def main():
     g = MyGraph()
